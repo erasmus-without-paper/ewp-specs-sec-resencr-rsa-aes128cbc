@@ -1,7 +1,7 @@
 Release notes
 =============
 
-This document describes all the changes made to the *`ewp-rsa-aes128cbc`
+This document describes all the changes made to the *`ewp-rsa-aes128gcm`
 Response Encryption* document, starting from its first released version.
 
 

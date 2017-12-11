@@ -5,8 +5,8 @@
     xmlns:ewp="https://github.com/erasmus-without-paper/ewp-specs-architecture/blob/stable-v1/common-types.xsd"
     elementFormDefault="qualified"
 
-    targetNamespace="https://github.com/erasmus-without-paper/ewp-specs-sec-resencr-rsa-aes128cbc/tree/stable-v1"
-    xmlns="https://github.com/erasmus-without-paper/ewp-specs-sec-resencr-rsa-aes128cbc/tree/stable-v1"
+    targetNamespace="https://github.com/erasmus-without-paper/ewp-specs-sec-resencr-rsa-aes128gcm/tree/stable-v1"
+    xmlns="https://github.com/erasmus-without-paper/ewp-specs-sec-resencr-rsa-aes128gcm/tree/stable-v1"
 >
     <xs:import
         schemaLocation="https://raw.githubusercontent.com/erasmus-without-paper/ewp-specs-architecture/stable-v1/common-types.xsd"
@@ -22,13 +22,13 @@
         </xs:documentation>
     </xs:annotation>
 
-    <xs:element name="ewp-rsa-aes128cbc">
+    <xs:element name="ewp-rsa-aes128gcm">
         <xs:annotation>
             <xs:documentation>
-                This element uniquely identifies the `ewp-rsa-aes128cbc` method of response
+                This element uniquely identifies the `ewp-rsa-aes128gcm` method of response
                 encryption, as described here:
 
-                https://github.com/erasmus-without-paper/ewp-specs-sec-resencr-rsa-aes128cbc
+                https://github.com/erasmus-without-paper/ewp-specs-sec-resencr-rsa-aes128gcm
 
                 It can be used in various contexts, whenever someone needs to identify this
                 particular method of response encryption. In particular, it is often seen

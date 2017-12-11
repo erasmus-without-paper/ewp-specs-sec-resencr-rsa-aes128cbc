@@ -1,8 +1,8 @@
-`ewp-rsa-aes128cbc` Response Encryption
+`ewp-rsa-aes128gcm` Response Encryption
 =======================================
 
 This document describes how to accomplish confidentiality of EWP HTTP responses
-with the use of `ewp-rsa-aes128cbc` encryption.
+with the use of `ewp-rsa-aes128gcm` encryption.
 
 * [What is the status of this document?][statuses]
 * [See the index of all other EWP Specifications][develhub]
@@ -12,7 +12,7 @@ Introduction
 ------------
 
 This method of response encryption can be used, when - for any reason - using
-plain TLS is "not enough". It makes use of `ewp-rsa-aes128cbc` encryption, as
+plain TLS is "not enough". It makes use of `ewp-rsa-aes128gcm` encryption, as
 specified [here][encr-spec].
 
 Note, that only the body of the response is encrypted. Other response
@@ -27,17 +27,17 @@ Implementing a server
 
 Check the contents of the request's `Accept-Encoding` header, as described in
 [this RFC 7231 chapter][accept-encoding-rfc]. If one of the codings listed
-there is `ewp-rsa-aes128cbc` (with `qvalue` greater than zero), then the client
+there is `ewp-rsa-aes128gcm` (with `qvalue` greater than zero), then the client
 indicates that it wants you to encrypt the response.
 
-If `ewp-rsa-aes128cbc` is not present among the codings, then the client
+If `ewp-rsa-aes128gcm` is not present among the codings, then the client
 doesn't want you to use this encryption method. You should proceed and verify
 if the client doesn't want you to use some other encryption method (e.g. fall
 back to the regular TLS response encryption).
 
-If `ewp-rsa-aes128cbc` is the only encryption method you support (i.e. you
+If `ewp-rsa-aes128gcm` is the only encryption method you support (i.e. you
 don't allow plain TLS encryption), but the client doesn't include
-`ewp-rsa-aes128cbc` among its `Accept-Encoding` codings, then you MUST respond
+`ewp-rsa-aes128gcm` among its `Accept-Encoding` codings, then you MUST respond
 with a HTTP 4xx error response (preferably HTTP 406), and include a proper
 `<developer-message>`.
 
@@ -61,14 +61,14 @@ If you cannot determine the encryption key, then you MUST respond with HTTP
 ### Include `Content-Encoding` header
 
 You MUST include a proper `Content-Encoding` header, as described in [this RFC
-7231 chapter][content-encoding-rfc], with `ewp-rsa-aes128cbc` listed as one of
+7231 chapter][content-encoding-rfc], with `ewp-rsa-aes128gcm` listed as one of
 the applied codings (and usually the only one).
 
 
 ### Encrypt the response
 
-When applying your `ewp-rsa-aes128cbc` coding, encrypt the payload as described
-in the [`ewp-rsa-aes128cbc` Encryption Specs][encr-spec].
+When applying your `ewp-rsa-aes128gcm` coding, encrypt the payload as described
+in the [`ewp-rsa-aes128gcm` Encryption Specs][encr-spec].
 
 
 Implementing a client
@@ -77,7 +77,7 @@ Implementing a client
 ### Include `Accept-Encoding` header
 
 The client notifies the server that it wants the server to encrypt the
-response. It does so by including `ewp-rsa-aes128cbc` encoding
+response. It does so by including `ewp-rsa-aes128gcm` encoding
 (case-insensitive) among the values listed in the request's `Accept-Encoding`
 header.
 
@@ -86,14 +86,14 @@ constructing your `Accept-Encoding` header. For example, if you send your
 request with the following header:
 
 ```http
-Accept-Encoding: deflate, ewp-rsa-aes128cbc, gzip
+Accept-Encoding: deflate, ewp-rsa-aes128gcm, gzip
 ```
 
 Then the server MAY, for example:
 
  * *Not* encrypt the response at all (because `identity` is still an acceptable
    coding here),
- * Respond with `Content-Encoding: gzip, ewp-rsa-aes128cbc` which indicates
+ * Respond with `Content-Encoding: gzip, ewp-rsa-aes128gcm` which indicates
    that the response has been first gzipped, and *then* encrypted (so you will
    need to first decrypt, and then ungzip such response).
  * Other coding orderings are also acceptable.
@@ -103,7 +103,7 @@ gzip it, etc.), and never sends an unencrypted response, then you SHOULD use
 the following request header:
 
 ```http
-Accept-Encoding: ewp-rsa-aes128cbc, *;q=0
+Accept-Encoding: ewp-rsa-aes128gcm, *;q=0
 ```
 
 
@@ -126,8 +126,8 @@ decide, if they have trouble with determining the default, for some reason).
 ### Process `Content-Encoding` and decrypt the response
 
 Process all codings in the response's `Content-Encoding` header, in order.
-When you encounter the `ewp-rsa-aes128cbc` coding, decrypt it as described
-in the [`ewp-rsa-aes128cbc` Encryption Specs][encr-spec].
+When you encounter the `ewp-rsa-aes128gcm` coding, decrypt it as described
+in the [`ewp-rsa-aes128gcm` Encryption Specs][encr-spec].
 
 
 Security considerations
@@ -152,7 +152,7 @@ answer a couple of questions:
 > How the client's request must look like? How can the server know, that the
 > client *wants the server* to use this particular method of encryption?
 
-The client indicates that by including a proper coding (`ewp-rsa-aes128cbc`) in
+The client indicates that by including a proper coding (`ewp-rsa-aes128gcm`) in
 its `Accept-Encoding` request header.
 
 > How the client delivers his encryption key to the server?
@@ -174,4 +174,4 @@ encrypted. Headers remain unencrypted.
 [sec-method-rules]: https://github.com/erasmus-without-paper/ewp-specs-sec-intro#rules
 [accept-encoding-rfc]: https://tools.ietf.org/html/rfc7231#section-5.3.4
 [content-encoding-rfc]: https://tools.ietf.org/html/rfc7231#section-3.1.2.2
-[encr-spec]: https://github.com/erasmus-without-paper/ewp-specs-sec-rsa-aes128cbc
+[encr-spec]: https://github.com/erasmus-without-paper/ewp-specs-sec-rsa-aes128gcm
